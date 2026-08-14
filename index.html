@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kadachi | Inteligencia Artificial para tu Seguridad Digital</title>
+    <style>
+        :root {
+            --primary-dark: #0A1128; /* Azul Marino oscuro */
+            --primary-blue: #1D4E89; /* Azul intermedio */
+            --accent-blue: #00B4D8; /* Azul eléctrico del logo */
+            --white: #FFFFFF;
+            --light-gray: #F4F7F6;
+            --text-dark: #333333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--white);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Animaciones generales */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 20px rgba(0, 180, 216, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(0, 180, 216, 0.6); }
+            100% { box-shadow: 0 0 20px rgba(0, 180, 216, 0.3); }
+        }
+        
+        @keyframes scanline {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+
+        /* Navbar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 10%;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-img {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .logo-container:hover .logo-img {
+            transform: rotate(360deg);
+        }
+
+        .logo-text h1 {
+            font-size: 26px;
+            color: var(--primary-dark);
+            font-weight: 800;
+            margin: 0;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text p {
+            font-size: 10px;
+            color: var(--accent-blue);
+            letter-spacing: 2.5px;
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            margin-left: 25px;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-blue);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-dark);
+            color: var(--white) !important;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: 2px solid var(--primary-dark);
+        }
+
+        .btn-primary:hover {
+            background-color: transparent;
+            color: var(--primary-dark) !important;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: radial-gradient(circle at 50% 50%, var(--primary-blue) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 80px 10% 100px 10%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            opacity: 0.5;
+        }
+
+        .hero-logo-container {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-logo {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background-color: var(--white);
+            padding: 10px;
+            animation: float 4s ease-in-out infinite, pulseGlow 3s infinite;
+        }
+
+        .hero h2 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn-cta {
+            background-color: var(--accent-blue);
+            color: var(--white);
+            padding: 18px 50px;
+            border-radius: 35px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: bold;
+            box-shadow: 0 10px 25px rgba(0, 180, 216, 0.4);
+            transition: all 0.3s;
+            position: relative;
+            z-index: 2;
+            display: inline-block;
+            border: 2px solid var(--accent-blue);
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 180, 216, 0.6);
+            background-color: var(--white);
+            color: var(--primary-dark);
+            border-color: var(--white);
+        }
+
+        /* Secciones Generales */
+        section {
+            padding: 100px 10%;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-dark);
+            margin-bottom: 60px;
+            position: relative;
+            font-weight: 800;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent-blue);
+            margin: 15px auto 0;
+            border-radius: 2px;
+        }
+
+        /* Como Funciona */
+        #funciona { background-color: var(--white); }
+
+        .steps-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .step-card {
+            flex: 1;
+            min-width: 300px;
+            background: var(--white);
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 6px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-blue));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px rgba(0, 180, 216, 0.15);
+        }
+
+        .step-card:hover::before { transform: scaleX(1); }
+
+        .step-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .step-card h3 {
+            color: var(--primary-dark);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        /* --- NUEVA SECCIÓN: EXPOSICIÓN / VENTAS --- */
+        #exposicion {
+            background-color: var(--light-gray);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #exposicion::before {
+            content: '';
+            position: absolute;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(0, 180, 216, 0.1) 0%, transparent 70%);
+            top: -200px; right: -200px;
+            border-radius: 50%;
+        }
+
+        .expo-container {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
+        }
+
+        .expo-text {
+            flex: 1;
+            min-width: 320px;
+        }
+
+        .expo-tag {
+            display: inline-block;
+            background-color: rgba(0, 180, 216, 0.1);
+            color: var(--primary-blue);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .expo-text h2 {
+            font-size: 3rem;
+            color: var(--primary-dark);
+            line-height: 1.1;
+            margin-bottom: 25px;
+        }
+
+        .expo-text h2 span {
+            color: var(--primary-blue);
+        }
+
+        .expo-text p {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .expo-features {
+            list-style: none;
+            margin-bottom: 40px;
+        }
+
+        .expo-features li {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .check-icon {
+            width: 30px; height: 30px;
+            background-color: var(--accent-blue);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        /* Mockup de la Interfaz (Visualización de Ventas) */
+        .expo-visual {
+            flex: 1;
+            min-width: 320px;
+            display: flex;
+            justify-content: center;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        .mockup-app {
+            background: var(--white);
+            width: 100%;
+            max-width: 400px;
+            border-radius: 25px;
+            box-shadow: 0 30px 60px rgba(10, 17, 40, 0.2);
+            overflow: hidden;
+            border: 1px solid #eee;
+            position: relative;
+        }
+
+        .mockup-header {
+            background: var(--primary-dark);
+            color: var(--white);
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .mockup-header h4 { font-size: 1.2rem; }
+        .mockup-header .status { color: var(--accent-blue); font-size: 0.9rem; font-weight: bold; }
+
+        .mockup-body { padding: 25px; }
+
+        .scan-line {
+            width: 100%; height: 2px;
+            background: var(--accent-blue);
+            position: absolute;
+            top: 0; left: 0;
+            box-shadow: 0 0 10px var(--accent-blue);
+            animation: scanline 2s infinite linear;
+        }
+
+        .account-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .account-row:last-child { border-bottom: none; }
+
+        .acc-info { display: flex; align-items: center; gap: 15px; }
+        .acc-icon { width: 40px; height: 40px; background: #eee; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; }
+        .acc-name { font-weight: bold; color: var(--text-dark); }
+        .acc-risk { font-size: 0.85rem; }
+
+        .risk-badge {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .risk-low { background: #d4edda; color: #155724; }
+        .risk-med { background: #fff3cd; color: #856404; }
+        .risk-high { background: #f8d7da; color: #721c24; }
+
+        /* Valores */
+        #valores {
+            background-color: var(--white);
+        }
+
+        .valores-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .valor-item {
+            background: var(--light-gray);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            border-left: 5px solid var(--accent-blue);
+            transition: transform 0.3s;
+        }
+
+        .valor-item:hover { transform: scale(1.03); }
+
+        .valor-item h4 {
+            color: var(--primary-blue);
+            margin-bottom: 12px;
+            font-size: 1.3rem;
+        }
+
+        /* FODA */
+        #foda {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            background-image: 
+                linear-gradient(rgba(10, 17, 40, 0.9), rgba(10, 17, 40, 0.95)),
+                url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        #foda .section-title { color: var(--white); }
+        #foda .section-title::after { background-color: var(--accent-blue); }
+
+        .foda-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .foda-card {
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .foda-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .foda-card h4 {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            font-size: 1.4rem;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+        }
+
+        .foda-card ul { list-style-type: none; }
+        .foda-card li {
+            margin-bottom: 12px;
+            font-size: 1rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .text-green { color: #4ADE80; }
+        .text-red { color: #F87171; }
+        .text-blue { color: #60A5FA; }
+        .text-yellow { color: #FACC15; }
+
+        /* Mision y Vision */
+        #mision-vision {
+            background-color: var(--white);
+            padding-bottom: 120px;
+        }
+
+        .mv-container {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+
+        .mv-box {
+            flex: 1;
+            min-width: 320px;
+            padding: 50px;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mv-box:first-child {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-blue));
+            color: var(--white);
+            box-shadow: 0 20px 40px rgba(10, 17, 40, 0.2);
+        }
+
+        .mv-box:last-child {
+            background: var(--light-gray);
+            border: 2px solid #e0e0e0;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.03);
+        }
+
+        .mv-box h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        
+        .mv-box:first-child h3 { color: var(--accent-blue); }
+        .mv-box:last-child h3 { color: var(--primary-dark); }
+
+        /* Contacto */
+        #contacto {
+            background: radial-gradient(circle at top right, var(--primary-blue), var(--primary-dark));
+            color: var(--white);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 50px;
+        }
+
+        .contact-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            min-width: 320px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--accent-blue);
+        }
+
+        .contact-card .icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .contact-card h3 {
+            color: var(--accent-blue);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .contact-card p { font-size: 1.2rem; margin-bottom: 5px; }
+        .contact-card a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        .contact-card a:hover { color: var(--accent-blue); }
+        
+        /* Footer */
+        footer {
+            background-color: var(--primary-dark);
+            color: rgba(255,255,255,0.6);
+            text-align: center;
+            padding: 40px 10%;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        footer .logo-text h1 { color: var(--white); }
+        
+    </style>
+</head>
+<body>
+
+    <!-- Menú de Navegación -->
+    <nav>
+        <div class="logo-container">
+            <img src="https://z-cdn-media.chatglm.cn/files/b5ffcac8-0da6-4957-92fa-34603cd0d1cc.jpeg?auth_key=1886738562-428dab4bda714e28aafb2232b7537f43-0-7f0232e9ab91450de54b8738ede96818" alt="Logo Kadachi" class="logo-img">
+            <div class="logo-text">
+                <h1>KADACHI</h1>
+                <p>INTELIGENCIA ARTIFICIAL</p>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="#inicio">Inicio</a>
+            <a href="#funciona">¿Cómo funciona?</a>
+            <a href="#exposicion">La Solución</a>
+            <a href="#valores">Valores</a>
+            <a href="#contacto" class="btn-primary">Contáctanos</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero" id="inicio">
+        <div class="hero-logo-container">
+            <img src="https://z-cdn-media.chatglm.cn/files/b5ffcac8-0da6-4957-92fa-34603cd0d1cc.jpeg?auth_key=1886738562-428dab4bda714e28aafb2232b7537f43-0-7f0232e9ab91450de54b8738ede96818" alt="Logo Kadachi Inteligencia Artificial" class="hero-logo">
+        </div>
+        <h2>Tú tienes el control.<br>Nosotros te damos la guía.</h2>
+        <p>No vendemos miedo, construimos paz mental. Kadachi es la IA que te ayuda a organizar y supervisar la seguridad de tus cuentas digitales, sin reemplazar tus decisiones.</p>
+        <a href="#exposicion" class="btn-cta">Descubre Kadachi</a>
+    </div>
+
+    <!-- ¿Cómo funciona? -->
+    <section id="funciona">
+        <h2 class="section-title">¿Cómo funciona Kadachi?</h2>
+        <div class="steps-container">
+            <div class="step-card">
+                <span class="step-icon">📝</span>
+                <h3>1. Tú Registras</h3>
+                <p>El usuario registra la información de las cuentas que desea analizar. Tú decides qué datos compartir.</p>
+            </div>
+            <div class="step-card">
+                <span class="step-icon">🧠</span>
+                <h3>2. La IA Analiza</h3>
+                <p>Kadachi evalúa los datos, detecta posibles riesgos (contraseñas débiles, falta de 2FA) y prioriza las cuentas vulnerables.</p>
+            </div>
+            <div class="step-card">
+                <span class="step-icon">🛡️</span>
+                <h3>3. Tú Decides</h3>
+                <p>Recibes recomendaciones claras para mejorar. El usuario mantiene el control total sobre qué acciones realizar.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- --- NUEVA SECCIÓN: EXPOSICIÓN DE VENTAS --- -->
+    <section id="exposicion">
+        <div class="expo-container">
+            <!-- Lado Persuasivo (Texto de Ventas) -->
+            <div class="expo-text">
+                <span class="expo-tag">⚡ LA SOLUCIÓN INTELIGENTE</span>
+                <h2>Más que un software, tu <span>aliado estratégico</span> en ciberseguridad.</h2>
+                <p>En un mundo lleno de amenazas digitales, Kadachi no solo te avisa del peligro, te educa y te empodera. Diseñado para instituciones, docentes, estudiantes y cualquier persona que valore su tranquilidad.</p>
+                
+                <ul class="expo-features">
+                    <li>
+                        <span class="check-icon">✔</span>
+                        Prevención proactiva: Detecta vulnerables antes de que sean un problema.
+                    </li>
+                    <li>
+                        <span class="check-icon">✔</span>
+                        Cero tecnicismos: Lenguaje claro y accesible para cualquier usuario.
+                    </li>
+                    <li>
+                        <span class="check-icon">✔</span>
+                        Autonomía total: La IA recomienda, tú tomas las decisiones.
+                    </li>
+                </ul>
+                
+                <a href="#contacto" class="btn-cta" style="background: var(--primary-dark); border-color: var(--primary-dark);">Quiero implementar Kadachi</a>
+            </div>
+
+            <!-- Lado Visual (Simulación de la App) -->
+            <div class="expo-visual">
+                <div class="mockup-app">
+                    <div class="scan-line"></div>
+                    <div class="mockup-header">
+                        <h4>Panel de Control Kadachi</h4>
+                        <span class="status">● Analizando</span>
+                    </div>
+                    <div class="mockup-body">
+                        <!-- Cuenta 1 -->
+                        <div class="account-row">
+                            <div class="acc-info">
+                                <div class="acc-icon">📧</div>
+                                <div>
+                                    <div class="acc-name">Correo Institucional</div>
+                                    <div class="acc-risk" style="color:#155724;">Seguro</div>
+                                </div>
+                            </div>
+                            <div class="risk-badge risk-low">Bajo Riesgo</div>
+                        </div>
+                        <!-- Cuenta 2 -->
+                        <div class="account-row">
+                            <div class="acc-info">
+                                <div class="acc-icon">📘</div>
+                                <div>
+                                    <div class="acc-name">Redes Sociales</div>
+                                    <div class="acc-risk" style="color:#856404;">Contraseña débil</div>
+                                </div>
+                            </div>
+                            <div class="risk-badge risk-med">Atención</div>
+                        </div>
+                        <!-- Cuenta 3 -->
+                        <div class="account-row">
+                            <div class="acc-info">
+                                <div class="acc-icon">☁️</div>
+                                <div>
+                                    <div class="acc-name">Almacenamiento Nube</div>
+                                    <div class="acc-risk" style="color:#721c24;">Sin verificación 2FA</div>
+                                </div>
+                            </div>
+                            <div class="risk-badge risk-high">Alto Riesgo</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Valores -->
+    <section id="valores">
+        <h2 class="section-title">Nuestros Principios</h2>
+        <div class="valores-grid">
+            <div class="valor-item">
+                <h4>🧘‍♂️ Empatía y Tranquilidad</h4>
+                <p>No vendemos miedo, construimos paz mental. Ponemos las emociones y la calma del usuario en el centro de cada solución.</p>
+            </div>
+            <div class="valor-item">
+                <h4>👤 Humano al Control</h4>
+                <p>La tecnología es poderosa, pero la persona tiene el control. Damos conocimiento para tomar decisiones informadas.</p>
+            </div>
+            <div class="valor-item">
+                <h4>🚀 Evolución Continua</h4>
+                <p>Aprendemos y cambiamos con el tiempo. Nos adaptamos a las nuevas tendencias y desafíos digitales.</p>
+            </div>
+            <div class="valor-item">
+                <h4>🔍 Claridad y Transparencia</h4>
+                <p>Hacemos la seguridad fácil de entender. Hablamos de forma sencilla y honesta, sin tecnicismos complicados.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FODA -->
+    <section id="foda">
+        <h2 class="section-title">Transparencia Empresarial</h2>
+        <div class="foda-grid">
+            <div class="foda-card">
+                <h4 class="text-green">💪 Fortalezas</h4>
+                <ul>
+                    <li class="text-green">✔<span style="color:white; margin-left:10px;">IA apoya sin reemplazar el criterio del usuario.</span></li>
+                    <li class="text-green">✔<span style="color:white; margin-left:10px;">Equipo con conocimientos técnicos en software.</span></li>
+                    <li class="text-green">✔<span style="color:white; margin-left:10px;">Identidad visual clara y coherente.</span></li>
+                </ul>
+            </div>
+            <div class="foda-card">
+                <h4 class="text-red">📉 Debilidades</h4>
+                <ul>
+                    <li class="text-red">✖<span style="color:white; margin-left:10px;">Equipo con escasos recursos financieros.</span></li>
+                    <li class="text-red">✖<span style="color:white; margin-left:10px;">Dependencia de proveedores externos de IA.</span></li>
+                </ul>
+            </div>
+            <div class="foda-card">
+                <h4 class="text-blue">🚀 Oportunidades</h4>
+                <ul>
+                    <li class="text-blue">★<span style="color:white; margin-left:10px;">Demanda creciente de herramientas de IA.</span></li>
+                    <li class="text-blue">★<span style="color:white; margin-left:10px;">Integración con plataformas educativas/empresariales.</span></li>
+                    <li class="text-blue">★<span style="color:white; margin-left:10px;">Mercado de asistentes virtuales en expansión.</span></li>
+                </ul>
+            </div>
+            <div class="foda-card">
+                <h4 class="text-yellow">⚠️ Amenazas</h4>
+                <ul>
+                    <li class="text-yellow">!<span style="color:white; margin-left:10px;">Alta competencia de IA ya consolidada.</span></li>
+                    <li class="text-yellow">!<span style="color:white; margin-left:10px;">Cambios regulatorios sobre datos e IA.</span></li>
+                    <li class="text-yellow">!<span style="color:white; margin-left:10px;">Evolución tecnológica acelerada.</span></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Misión y Visión -->
+    <section id="mision-vision">
+        <h2 class="section-title">Identidad Corporativa</h2>
+        <div class="mv-container">
+            <div class="mv-box">
+                <h3>🎯 Misión</h3>
+                <p>Brindar tranquilidad a las personas en el mundo digital. A través de la inteligencia artificial, empoderamos al usuario para que navegue sin miedo, entendiendo y protegiendo sus cuentas con una herramienta que combina seguridad inteligente y educación accesible. La IA es solo la herramienta; el héroe es el usuario.</p>
+            </div>
+            <div class="mv-box">
+                <h3>🌟 Visión</h3>
+                <p>Ser el aliado a largo plazo de confianza para millones de usuarios y organizaciones. Aspiramos a ser una empresa que se anticipa a los cambios tecnológicos del futuro sin abrumar a las personas, garantizando una evolución continua, confianza e innovación constante en cada nuevo desafío digital.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contacto -->
+    <section id="contacto">
+        <h2 class="section-title" style="color: white;">¿Listo para tomar el control?</h2>
+        <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto; opacity: 0.9;">Si tienes dudas, quieres implementar Kadachi en tu institución educativa o empresa, o simplemente necesitas orientación, estamos para ayudarte.</p>
+        
+        <div class="contact-info">
+            <div class="contact-card">
+                <span class="icon">📧</span>
+                <h3>Correo Electrónico</h3>
+                <p><a href="mailto:contacto@kadachi.com">sflopezri03@inemkennedy.edu.co</a></p>
+                <p><a href="mailto:contacto@kadachi.com">difebravopu29@inemkennedy.edu.co</a></p>
+                <p><a href="mailto:contacto@kadachi.com">isacanogon04@inemkennedy.edu.co</a></p>
+            </div>
+            <div class="contact-card">
+                <span class="icon">📱</span>
+                <h3>Número de Contacto</h3>
+                <p><a href="tel:+573142986512">+57 3017726957</a></p>
+                <p><a href="tel:+573142986512">+57 3142986512</a></p>
+                <p><a href="tel:+573142986512">+57 3125563989</a></p>
+                <p style="font-size: 1rem; opacity: 0.8;">Lun a Vie: 8:00 am - 6:00 pm</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="logo-text" style="display: inline-block; margin-bottom: 20px;">
+            <h1 style="color: white;">KADACHI</h1>
+            <p style="color: var(--accent-blue);">INTELIGENCIA ARTIFICIAL</p>
+        </div>
+        <p>&copy; 2024 Kadachi. Seguridad digital, educación accesible y paz mental.</p>
+    </footer>
+
+</body>
+</html>
